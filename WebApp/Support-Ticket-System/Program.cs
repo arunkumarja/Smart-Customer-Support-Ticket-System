@@ -5,11 +5,14 @@ using System.Text;
 using Support_Ticket_System.Common.Config;
 using Microsoft.EntityFrameworkCore;
 using Support_Ticket_System.Data;
+using Support_Ticket_System.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -56,6 +59,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

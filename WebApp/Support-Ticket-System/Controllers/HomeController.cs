@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Support_Ticket_System.Models;
 
@@ -21,6 +22,13 @@ namespace Support_Ticket_System.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [Authorize]
+        [HttpGet("api/privacy")]
+        public IActionResult GetPrivacyData()
+        {
+            return Ok("Private data accessible via JWT.");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

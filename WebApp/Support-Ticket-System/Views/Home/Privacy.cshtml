@@ -1,6 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privacy";
+    Layout = "_Layout";
 }
-<h1>@ViewData["Title"]</h1>
+
+<h2>Privacy</h2>
+<button onclick="fetchPrivateData()">Call Private API</button>
+
+<script>
+    async function fetchPrivateData() {
+        const token = localStorage.getItem("jwt_token");
+        const response = await fetch('/api/privacy', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        const result = await response.text("success");
+        alert(result);
+    }
+</script>
+
 
 <p>Use this page to detail your site's privacy policy.</p>
