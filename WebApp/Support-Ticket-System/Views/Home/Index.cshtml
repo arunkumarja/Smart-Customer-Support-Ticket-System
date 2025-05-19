@@ -1,8 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container text-center mt-5">
+    <h1>Welcome to Smart Support Ticket System 🎫</h1>
+    <p class="lead">Submit, track, and manage your support tickets efficiently.</p>
+
+    <div class="mt-4">
+        <a asp-controller="Auth" asp-action="Login" class="btn btn-primary me-2">Login</a>
+        <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-secondary">Register</a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <h5>🎯 Fast Responses</h5>
+        <p>Our support agents respond quickly with AI-powered suggestions.</p>
+    </div>
+    <div class="col-md-4">
+        <h5>🔒 Secure System</h5>
+        <p>Data encrypted, accounts protected by strong authentication.</p>
+    </div>
+    <div class="col-md-4">
+        <h5>📈 Ticket Insights</h5>
+        <p>Track ticket status, resolution time, and overall performance.</p>
+    </div>
 </div>

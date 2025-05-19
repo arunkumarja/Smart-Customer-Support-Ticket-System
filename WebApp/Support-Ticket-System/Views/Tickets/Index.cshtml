@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Support_Ticket_System.Models.SupportTicket>
+@{
+    ViewData["Title"] = "My Tickets";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h2>🎫 My Support Tickets</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">+ New Ticket</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Priority</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model)
+            {
+                <tr>
+                    <td>@ticket.Title</td>
+                    <td>@ticket.Status</td>
+                    <td>@ticket.CreatedAt.ToShortDateString()</td>
+                    <td>@ticket.Priority</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

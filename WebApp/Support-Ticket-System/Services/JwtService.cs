@@ -22,7 +22,8 @@ namespace Support_Ticket_System.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.Name, email),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Key));

@@ -6,6 +6,7 @@ using Support_Ticket_System.Common.Config;
 using Microsoft.EntityFrameworkCore;
 using Support_Ticket_System.Data;
 using Support_Ticket_System.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,11 +22,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 SerilogConfig.ConfigureLogger(builder.Configuration);
 builder.Host.UseSerilog();
 
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+
 // Bind JWT section to config object
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("Jwt"));
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
 
-// Add JWT Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -45,6 +48,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -60,6 +64,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
+app.UseSession();
 
 app.UseAuthorization();
 

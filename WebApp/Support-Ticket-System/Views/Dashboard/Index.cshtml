@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h2>Welcome to your Dashboard, @User.Identity.Name!</h2>
+    <p>From here, you can:</p>
+    <ul>
+        <li><a asp-controller="Tickets" asp-action="Index">📋 View My Tickets</a></li>
+        <li><a class="btn btn-success" asp-controller="Tickets" asp-action="Create">➕ Create New Ticket</a></li>
+    </ul>
+</div>
+

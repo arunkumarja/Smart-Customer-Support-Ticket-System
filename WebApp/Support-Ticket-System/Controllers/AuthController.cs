@@ -75,9 +75,14 @@ namespace Support_Ticket_System.Controllers
 
             var token = _jwt.GenerateToken(user.Email, user.Role);
             ViewBag.Token = token;
-            if (user!=null)
+            if (user.Role == "Admin")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "AdminDashboard");
+            }
+            else 
+            {
+               return RedirectToAction("Index", "Dashboard");
+
             }
             ModelState.AddModelError(string.Empty, "Inavlid LoginAttemnt");
 
