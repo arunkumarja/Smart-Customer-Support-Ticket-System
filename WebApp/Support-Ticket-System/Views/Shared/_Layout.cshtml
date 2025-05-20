@@ -47,5 +47,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Privacy.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @inject IHttpContextAccessor HttpContextAccessor
+
 </body>
 </html>

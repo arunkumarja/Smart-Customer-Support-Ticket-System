@@ -34,21 +34,21 @@ namespace Support_Ticket_System.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(SupportTicketCreateViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
-            HttpContext.Session.SetString("Test", "OK");
-            var test = HttpContext.Session.GetString("Test");
 
-
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null)
                 return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
 
             var ticket = new SupportTicket
             {
-                UserId = userId.Value,
+                UserId = userId,
                 Title = model.Title,
                 Description = model.Description,
                 Priority = model.Priority,
@@ -61,7 +61,6 @@ namespace Support_Ticket_System.Controllers
 
             return RedirectToAction("Index");
         }
-
     }
 
 }

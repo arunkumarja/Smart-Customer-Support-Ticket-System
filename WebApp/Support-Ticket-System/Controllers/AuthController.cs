@@ -6,7 +6,9 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Support_Ticket_System.Services;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 
 namespace Support_Ticket_System.Controllers
@@ -63,7 +65,6 @@ namespace Support_Ticket_System.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var hashed = HashPassword(model.Password);
-
             var user = await _context.Users.FirstOrDefaultAsync(u =>
                 u.Email == model.Email && u.PasswordHash == hashed);
 
@@ -73,20 +74,26 @@ namespace Support_Ticket_System.Controllers
                 return View(model);
             }
 
-            var token = _jwt.GenerateToken(user.Email, user.Role);
-            ViewBag.Token = token;
-            if (user.Role == "Admin")
-            {
-                return RedirectToAction("Index", "AdminDashboard");
-            }
-            else 
-            {
-               return RedirectToAction("Index", "Dashboard");
+            // Set claims for cookie
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim("UserId", user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role ?? "User")
+                };
 
-            }
-            ModelState.AddModelError(string.Empty, "Inavlid LoginAttemnt");
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
 
-            return View(model);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            return RedirectToAction("Index", "Dashboard"); // or TicketsController
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
         private string HashPassword(string password)
